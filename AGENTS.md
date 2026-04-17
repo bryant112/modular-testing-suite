@@ -23,3 +23,7 @@ Avoid changing the MTS application code unless the capability will be broadly re
 - Project integration guide: `C:\dev\MTS\docs\01_project_integration.md`
 - Starter template: `C:\dev\MTS\modules\project-http-template.json`
 - Example live module: `C:\dev\MTS\modules\military-logistics-sim.json`
+
+## User shorthand
+
+- `DAYSF` means `do as you see fit`.
