@@ -1,0 +1,48 @@
+{
+  "id": "project-http-template",
+  "name": "Project HTTP Template",
+  "description": "Starter manifest for wiring a new project into MTS.",
+  "category": "Template",
+  "targetHint": "Replace endpoints and variables for the target project.",
+  "variables": [
+    { "key": "seed", "label": "Seed", "description": "Example numeric input.", "defaultValue": "42" },
+    { "key": "resourceId", "label": "Resource ID", "description": "Captured from setup calls when needed.", "defaultValue": "" },
+    { "key": "flagValue", "label": "Flag Value", "description": "Example true/false variable.", "defaultValue": "true" }
+  ],
+  "features": [
+    { "key": "feature_alpha", "label": "Feature Alpha", "description": "Example sprint feature toggle.", "enabledByDefault": false },
+    { "key": "feature_bravo", "label": "Feature Bravo", "description": "Another feature that can be tested alone or in combination.", "enabledByDefault": false },
+    { "key": "feature_charlie", "label": "Feature Charlie", "description": "Third feature for combination testing.", "enabledByDefault": false }
+  ],
+  "actions": [
+    {
+      "id": "create-resource",
+      "title": "Create Resource",
+      "description": "Example POST action that captures a returned resource ID.",
+      "method": "POST",
+      "endpointTemplate": "/resources",
+      "bodyTemplate": "{\n  \"seed\": {seed},\n  \"features\": {\n    \"featureAlpha\": {feature_alpha},\n    \"featureBravo\": {feature_bravo},\n    \"featureCharlie\": {feature_charlie}\n  }\n}",
+      "tags": ["setup", "template"],
+      "captureJsonFields": {
+        "resourceId": "resourceId"
+      }
+    },
+    {
+      "id": "get-resource",
+      "title": "Get Resource",
+      "description": "Example GET action using a captured ID.",
+      "method": "GET",
+      "endpointTemplate": "/resources/{resourceId}",
+      "tags": ["read", "template"]
+    },
+    {
+      "id": "update-flags",
+      "title": "Update Flags",
+      "description": "Example PUT action with a boolean variable and feature-matrix context.",
+      "method": "PUT",
+      "endpointTemplate": "/resources/{resourceId}/flags",
+      "bodyTemplate": "{\n  \"enabled\": {flagValue},\n  \"featureAlpha\": {feature_alpha},\n  \"featureBravo\": {feature_bravo},\n  \"featureCharlie\": {feature_charlie}\n}",
+      "tags": ["config", "template"]
+    }
+  ]
+}

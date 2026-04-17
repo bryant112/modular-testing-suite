@@ -1,0 +1,121 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Mts.App.ViewModels"
+        xmlns:core="using:Mts.Core"
+        x:Class="Mts.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Modular Testing Suite"
+        Width="1320"
+        Height="860"
+        Icon="/Assets/mts-console.ico">
+  <Grid Margin="12" RowDefinitions="Auto,Auto,*" ColumnDefinitions="420,*">
+    <Border Grid.Row="0" Grid.ColumnSpan="2" Classes="commandBar" Padding="14">
+      <StackPanel Spacing="6">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel>
+            <TextBlock FontSize="24" FontWeight="Bold" Text="MODULAR TESTING SUITE" />
+            <TextBlock Classes="panelSubtitle" Text="REUSABLE TEST HARNESS // MODULE-DRIVEN // DROP-IN FOR OTHER PROJECTS" />
+          </StackPanel>
+          <Border Grid.Column="1" Classes="badge">
+            <TextBlock Classes="stencil" Text="MTS // ACTIVE" />
+          </Border>
+        </Grid>
+        <TextBlock Classes="muted" Text="{Binding StatusMessage}" />
+      </StackPanel>
+    </Border>
+
+    <Border Grid.Row="1" Grid.ColumnSpan="2" Classes="commandBar" Margin="0,10,0,10" Padding="10">
+      <Grid ColumnDefinitions="120,*,Auto,Auto,Auto" ColumnSpacing="8">
+        <TextBlock Grid.Column="0" VerticalAlignment="Center" Classes="stencil" Text="BASE URL" />
+        <TextBox Grid.Column="1" Classes="fieldInput" Text="{Binding BaseUrl}" />
+        <Button Grid.Column="2" Classes="commandButton" Content="RELOAD MODULES" Command="{Binding ReloadModulesCommand}" />
+        <Button Grid.Column="3" Classes="commandButton" Content="OPEN MODULES" Command="{Binding OpenModulesFolderCommand}" />
+        <Button Grid.Column="4" Classes="commandButton" Content="RUN ACTION" Command="{Binding ExecuteSelectedActionCommand}" />
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="2" Grid.Column="0" Classes="panel" Margin="0,0,6,0" Padding="10">
+      <StackPanel>
+        <TextBlock Classes="panelTitle" Text="[MODULES] SUITES" Margin="0,0,0,8" />
+        <TextBlock Classes="muted" Text="{Binding ModuleSummary}" TextWrapping="Wrap" Margin="0,0,0,8" />
+        <ListBox ItemsSource="{Binding Modules}" SelectedItem="{Binding SelectedModule}" Height="160">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="core:TestModuleDefinition">
+              <Border Classes="card" Margin="0,0,0,8" Padding="8">
+                <StackPanel>
+                  <TextBlock FontWeight="SemiBold" Text="{Binding Name}" />
+                  <TextBlock Classes="muted" Text="{Binding Category, StringFormat='TYPE // {0}'}" />
+                  <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Classes="panelTitle" Text="[FEATURE MATRIX] SPRINT TOGGLES" Margin="0,12,0,8" />
+        <TextBlock Classes="muted" Text="{Binding FeatureSummary}" TextWrapping="Wrap" Margin="0,0,0,8" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="180">
+          <ItemsControl ItemsSource="{Binding Features}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:FeatureToggleViewModel">
+                <Border Classes="card" Margin="0,0,0,8" Padding="8">
+                  <StackPanel Spacing="4">
+                    <CheckBox IsChecked="{Binding IsEnabled}" Content="{Binding Label}" />
+                    <TextBlock Classes="muted" Text="{Binding Key, StringFormat='FEATURE // {0}'}" />
+                    <TextBlock Classes="muted" Text="{Binding Description}" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+
+        <TextBlock Classes="panelTitle" Text="[VARIABLES] LIVE INPUTS" Margin="0,12,0,8" />
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="228">
+          <ItemsControl ItemsSource="{Binding Variables}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:VariableEntryViewModel">
+                <Border Classes="card" Margin="0,0,0,8" Padding="8">
+                  <StackPanel Spacing="4">
+                    <TextBlock FontWeight="SemiBold" Text="{Binding Label}" />
+                    <TextBlock Classes="muted" Text="{Binding Key, StringFormat='KEY // {0}'}" />
+                    <TextBlock Classes="muted" Text="{Binding Description}" TextWrapping="Wrap" />
+                    <TextBox Classes="fieldInput" Text="{Binding Value}" />
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </StackPanel>
+    </Border>
+
+    <Border Grid.Row="2" Grid.Column="1" Classes="panelAlt" Margin="6,0,0,0" Padding="10">
+      <Grid RowDefinitions="Auto,180,Auto,220,Auto,*">
+        <TextBlock Grid.Row="0" Classes="panelTitle" Text="[ACTIONS] MODULE PLAYBOOK" Margin="0,0,0,8" />
+        <ListBox Grid.Row="1" ItemsSource="{Binding Actions}" SelectedItem="{Binding SelectedAction}">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:ActionItemViewModel">
+              <Border Classes="card" Margin="0,0,0,8" Padding="8">
+                <StackPanel>
+                  <Grid ColumnDefinitions="90,*">
+                    <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding Method}" />
+                    <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding Title}" />
+                  </Grid>
+                  <TextBlock Classes="muted" Text="{Binding Tags}" />
+                  <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Grid.Row="2" Classes="panelTitle" Text="[REQUEST] PREVIEW" Margin="0,10,0,8" />
+        <TextBox Grid.Row="3" Classes="fieldInput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding RequestPreview}" />
+
+        <TextBlock Grid.Row="4" Classes="panelTitle" Text="{Binding ResultSummary, StringFormat='[RESULT] {0}'}" Margin="0,10,0,8" />
+        <TextBox Grid.Row="5" Classes="fieldInput" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding ResponsePreview}" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

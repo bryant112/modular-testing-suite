@@ -1,0 +1,77 @@
+{
+  "id": "military-logistics-sim",
+  "name": "Military Logistics Sim",
+  "description": "Reusable test module for the logistics sim API, including session setup, RWD refresh, weather refresh, and dev feature toggles.",
+  "category": "Simulation",
+  "targetHint": "Use with the sim API at http://localhost:5080",
+  "variables": [
+    { "key": "seed", "label": "Seed", "description": "Seed used when creating a session.", "defaultValue": "42" },
+    { "key": "sessionId", "label": "Session ID", "description": "Captured automatically from Create Session.", "defaultValue": "" },
+    { "key": "useRealWorldWeather", "label": "Live Weather", "description": "true or false", "defaultValue": "true" },
+    { "key": "autoWeatherRefreshEnabled", "label": "Auto Weather Refresh", "description": "true or false", "defaultValue": "true" },
+    { "key": "allowManualWorldDataRefresh", "label": "Manual RWD Refresh", "description": "true or false", "defaultValue": "true" },
+    { "key": "allowManualWeatherRefresh", "label": "Manual Weather Refresh", "description": "true or false", "defaultValue": "true" },
+    { "key": "freezeStaticRwdDuringRun", "label": "Freeze Static RWD", "description": "true or false", "defaultValue": "true" },
+    { "key": "useMockWeatherFallback", "label": "Weather Fallback", "description": "true or false", "defaultValue": "true" }
+  ],
+  "features": [
+    { "key": "feature_routeSeverity", "label": "Route Severity", "description": "Example sprint feature toggle representing the route severity slice.", "enabledByDefault": true },
+    { "key": "feature_realWorldWeather", "label": "Real Weather", "description": "Example sprint feature toggle representing the real-weather slice.", "enabledByDefault": true },
+    { "key": "feature_dashboardSkin", "label": "Dashboard Skin", "description": "Example sprint feature toggle representing the cinematic dashboard skin.", "enabledByDefault": false }
+  ],
+  "actions": [
+    {
+      "id": "create-session",
+      "title": "Create Session",
+      "description": "Creates a new sim session and captures the returned sessionId.",
+      "method": "POST",
+      "endpointTemplate": "/sessions",
+      "bodyTemplate": "{\n  \"seed\": {seed}\n}",
+      "tags": ["setup", "session"],
+      "captureJsonFields": {
+        "sessionId": "sessionId"
+      }
+    },
+    {
+      "id": "get-world-data",
+      "title": "Get World Data Status",
+      "description": "Reads the current world snapshot metadata and live weather status.",
+      "method": "GET",
+      "endpointTemplate": "/sessions/{sessionId}/world-data",
+      "tags": ["rwd", "weather", "status"]
+    },
+    {
+      "id": "get-state",
+      "title": "Get World State",
+      "description": "Reads the current world state payload including embedded world-data info.",
+      "method": "GET",
+      "endpointTemplate": "/sessions/{sessionId}/state",
+      "tags": ["state", "world", "feature-matrix"]
+    },
+    {
+      "id": "refresh-rwd",
+      "title": "Update Real World Data",
+      "description": "Rebuilds the static RWD snapshot for the current session.",
+      "method": "POST",
+      "endpointTemplate": "/sessions/{sessionId}/world-data/refresh",
+      "tags": ["rwd", "refresh"]
+    },
+    {
+      "id": "refresh-weather",
+      "title": "Refresh Weather",
+      "description": "Forces a live weather refresh for the current session.",
+      "method": "POST",
+      "endpointTemplate": "/sessions/{sessionId}/weather/refresh",
+      "tags": ["weather", "refresh"]
+    },
+    {
+      "id": "apply-dev-features",
+      "title": "Apply Dev Features",
+      "description": "Pushes dev toggle settings into the active session.",
+      "method": "PUT",
+      "endpointTemplate": "/sessions/{sessionId}/dev-features",
+      "bodyTemplate": "{\n  \"useRealWorldWeather\": {useRealWorldWeather},\n  \"autoWeatherRefreshEnabled\": {autoWeatherRefreshEnabled},\n  \"allowManualWorldDataRefresh\": {allowManualWorldDataRefresh},\n  \"allowManualWeatherRefresh\": {allowManualWeatherRefresh},\n  \"freezeStaticRwdDuringRun\": {freezeStaticRwdDuringRun},\n  \"useMockWeatherFallback\": {useMockWeatherFallback}\n}",
+      "tags": ["dev", "toggles", "weather"]
+    }
+  ]
+}
