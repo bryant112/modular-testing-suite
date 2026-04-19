@@ -30,9 +30,9 @@ The goal is to keep useful testing workflows portable across projects instead of
 
 Start here when wiring a new project into MTS:
 
-- `C:\dev\MTS\docs\01_project_integration.md`
-- `C:\dev\MTS\modules\project-http-template.json`
-- `C:\dev\MTS\AGENTS.md`
+- [docs/01_project_integration.md](docs/01_project_integration.md)
+- [modules/project-http-template.json](modules/project-http-template.json)
+- [AGENTS.md](AGENTS.md)
 
 ## Structure
 
@@ -59,14 +59,28 @@ To use `MTS` with another project:
 
 ## Build
 
-```powershell
-cd C:\dev\MTS
-dotnet build .\MTS.sln
+```bash
+cd ~/dev/work/modular-testing-suite
+dotnet build ./MTS.sln
 ```
 
 ## Run
 
-```powershell
-cd C:\dev\MTS
-dotnet run --project .\src\Mts.App\Mts.App.csproj
+```bash
+cd ~/dev/work/modular-testing-suite
+dotnet run --project ./src/Mts.App/Mts.App.csproj
 ```
+
+Windows fallback uses the same commands from your Windows repo path.
+
+## Dev Toolbar
+
+- Run common workflows from terminal:
+  - `./scripts/dev-toolbar.sh start`
+  - `./scripts/dev-toolbar.sh build`
+  - `./scripts/dev-toolbar.sh test`
+  - `./scripts/dev-toolbar.sh lint`
+  - `./scripts/dev-toolbar.sh deploy` (safe stub)
+  - `./scripts/dev-toolbar.sh git-pull`
+  - `./scripts/dev-toolbar.sh git-push`
+- VS Code task labels use the same command set: `dev:*` and `git:*`.

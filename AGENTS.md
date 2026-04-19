@@ -10,7 +10,7 @@ This repo is a reusable standalone test harness for multiple projects.
 
 When a user says `use MTS`, prefer:
 
-1. adding or updating a module manifest in `C:\dev\MTS\modules`
+1. adding or updating a module manifest in `modules/`
 2. reusing the existing harness UI and executor
 3. keeping project-specific behavior in the manifest whenever possible
 4. using the feature matrix when sprint features need to be tested one-by-one or in combinations
@@ -19,10 +19,10 @@ Avoid changing the MTS application code unless the capability will be broadly re
 
 ## Important references
 
-- Overview: `C:\dev\MTS\README.md`
-- Project integration guide: `C:\dev\MTS\docs\01_project_integration.md`
-- Starter template: `C:\dev\MTS\modules\project-http-template.json`
-- Example live module: `C:\dev\MTS\modules\military-logistics-sim.json`
+- Overview: `README.md`
+- Project integration guide: `docs/01_project_integration.md`
+- Starter template: `modules/project-http-template.json`
+- Example live module: `modules/military-logistics-sim.json`
 
 ## User shorthand
 
